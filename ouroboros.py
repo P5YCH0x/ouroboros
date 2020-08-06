@@ -5,8 +5,13 @@ from tkinter import messagebox
 root = tk.Tk()
 root.title("Ouroboros")
 
-HEIGHT = int(sys.argv[1]) 
-WIDTH = int(sys.argv[2])
+if len(sys.argv) >= 2:
+    HEIGHT = int(sys.argv[1]) 
+    WIDTH = int(sys.argv[2])
+else:
+    HEIGHT = 500 
+    WIDTH = 500
+
 x1 = y1 = HEIGHT/2
 direc = "none"
 delay = 100
