@@ -17,6 +17,9 @@ direc = "none"
 delay = 100
 start_loop = 1
 
+list_of_rects = []
+max_size = 5
+
 score = 0
 walls = [f"{HEIGHT/2} {WIDTH/2}"]
 
@@ -26,10 +29,14 @@ score_box.pack()
 canvas = tk.Canvas(root, width=WIDTH, height=HEIGHT)
 canvas.pack()
 
-canvas.create_rectangle(x1, y1, x1+10, y1+10)
+starting_rect = canvas.create_rectangle(x1, y1, x1+10, y1+10, fill="green")
 
 def draw_rect():
-    canvas.create_rectangle(x1, y1, x1+10, y1+10, fill="green")
+    list_of_rects.append(canvas.create_rectangle(x1, y1, x1+10, y1+10, fill="green"))
+    print(list_of_rects)
+    if len(list_of_rects) > max_size:
+        canvas.delete(list_of_rects[0])
+        list_of_rects.pop(0)
 
 def score_add():
     global score, x1, y1
@@ -40,6 +47,8 @@ def score_add():
         messagebox.showinfo("you lose!", f"you lose! your final score was {score}")
         root.destroy()
     walls.append(coords)
+    if len(walls) > max_size:
+        walls.pop(0)
 
 
 def move():
@@ -65,8 +74,9 @@ def move():
     root.after(delay, move)
 
 def direction(event):
-    global direc, start_loop
+    global direc, start_loop, starting_rect
     direc = event.char
+    canvas.delete(starting_rect)
     if start_loop == 1:
         move()
         start_loop = 0
